@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+
+    
+
+    <style>
+        *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+.link{
+    
+    text-align: center;
+    text-transform: capitalize;
+    text-decoration: none;
+    color:#fff;
+    display:block;
+    margin:30px auto;
+    font-size: large;
+}
+
+.link:hover
+{
+    color: rgba(255, 255, 255, 0.568);
+}
+body
+{
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    background: url("https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
+    background-size: cover;
+    background-position: center;
+    font-family: 'roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.link{
+
+    position: absolute;
+    top: 10px;
+    right: 0;
+    padding: 10px 20px;
+    text-transform: capitalize;
+    font-size: 16px;
+    color: #fff;
+    background: none;
+    text-decoration: underline;
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+
+.greeting
+{
+    font-family: "georgia";
+    font-size: 60px;
+    color: #fff;
+    font-weight: 800;
+    text-transform: capitalize;
+    backdrop-filter: blur(100px);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.topnav a{
+    background: linear-gradient(140deg, #a51bcf, hsl(271, 93%, 55%));
+    color: #fff;
+    text-decoration: none;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.3rem;
+    transition: ease-in-out 0.2s;
+}
+
+.topnav a:hover{
+    background: linear-gradient(140deg, #9607c2, #6206b9);
+}
+
+.topnav a:active{
+    background: #61fa87;
+}
+
+
+   </style>
+
+</head>
+<body>
+    <div class="container">
+        <h1 class="greeting"> Login Successful</h1>
+        <br/>
+        <div class="topnav">
+            
+            
+            <a href="/add">ADD DATA</a>
+            <a href="/viewdata">VIEW DATA</a>
+            <a href="/add1">DOWNLOAD DATA</a>
+            
+            
+        </div>
+        <a href="/" class="link">Log Out</a>
+    </div>
+
+</body>
+</html>

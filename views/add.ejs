@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+
+    <link rel="stylesheet" href="../css/form.css">
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+*:focus{
+    outline: none;
+}
+
+body
+{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
+    background-size: cover;
+    background-position: center;
+    font-family: 'roboto', sans-serif;
+}
+
+.form{
+
+    width: 400px;
+    height: auto;
+    color: #fff;
+    font-family: 'georgia';
+}
+
+.heading
+{   
+    text-transform: capitalize;
+    text-align: center;
+    font-size: 60px;
+    font-weight: 300;
+    margin-bottom: 50px;
+}
+
+input,.submit-btn{
+    
+    width:80%;
+    height: 35px;
+    display: block;
+    margin:20px auto;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.651);
+    border:none;
+    color:black;
+    padding: 15px;
+    transition: .5s;
+    text-transform: capitalize;
+}
+
+input::placeholder{
+    color:black;
+    font-weight: bold;
+}
+
+input:focus,
+.submit-btn:hover
+{
+    background:#fff;
+    color: black;
+}
+
+input:focus::placeholder
+{
+    color: #000;
+}
+
+.submit-btn{
+     width:auto;
+     padding:0 20px;
+     cursor: pointer;
+     margin: 50px auto 0;  
+}
+
+.link{
+    
+    text-align: center;
+    text-transform: capitalize;
+    text-decoration: none;
+    color:#fff;
+    display:block;
+    margin:30px auto;
+}
+
+.link:hover
+{
+    color: rgba(255, 255, 255, 0.568);
+}
+
+.alert-box{
+    position: absolute;
+    top: -100px;
+    left:50%;
+    transform: translateX(-50%);
+    min-width: 150px;
+    max-width: 90%;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    text-transform: capitalize ;
+    background: rgb(255,119,119);
+    border-top: 10px solid rgb(255,37,37);
+    border-top-right-radius: 10px;
+    color:#fff;
+    font-family: 'roboto',sans-serif;
+    text-align: center;
+    transition: 1s;
+
+}
+    </style>
+</head>
+<body>
+
+    <form action="/add" method="POST" >
+    <div class="form">
+        <h1 class="heading">Enter Your Details</h1>
+        <input type="name" id="name" placeholder="name" autocomplete="off" class="name" name="name" required>
+        <input type="email" id="email" placeholder="email" autocomplete="off" class="email" name="email" required>
+        <input type="tel" id="number" placeholder="phone number" autocomplete="off" class="number" name="number" required>
+        <input type="address" id="address" placeholder="address" autocomplete="off" class="address" name="address" required>
+        <input type="number" id="semester" placeholder="semester" autocomplete="off" name="semester" class="semester" required>
+        
+        <button type="submit" class="submit-btn">Add Data</button>
+        <a href="/userprofile" class="link">Click here if you want to view your details</a>
+    </div>
+    </form>
+    
+</body>
+</html>
