@@ -1,9 +1,12 @@
-const e = require("express");
 const express=require("express");
 const path=require("path");
 const isJson = require('is-json');
+const mongodb = require("mongodb");
 
 const json2xls = require('json2xls');
+
+upload = require("express-fileupload"),
+csvtojson = require("csvtojson");
 
 const bodyParser = require('body-parser');
 
@@ -14,8 +17,8 @@ const XLSX = require('xlsx');
 
 const app=express();
 require("./db/conn");
-const { Register, Add}=require("./models/registers");
-const port=process.env.PORT||3000;
+const { Register, Add, Uploadcsv}=require("./models/registers");
+const port=process.env.PORT||2000;
 
 app.set("view engine","ejs");
 const static_path=path.join(__dirname,"../public");
@@ -24,7 +27,7 @@ app.use(express.static(static_path));
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
-// const bodyParser = require("body-parser");
+
 const { json } = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -51,7 +54,6 @@ res.status(201).render("index");
 {
     res.status(400).send(error);
 }
-    
 })
 
 app.get("/login",(req,res)=>
@@ -109,15 +111,7 @@ app.post("/add",async(req,res)=>
     }
 });
 
-// app.get("/exportdata",async(req,res)=>
-// {
-//     try{
-//         const userdata=await Add.find().sort();
-//         res.send(userdata);
 
-//     }catch(e)
-//     {res.send(e);}
-// })
 
 app.get("/viewdata",async(req,res)=>
 {
@@ -159,30 +153,72 @@ app.get("/add2",(req,res)=>
     res.render("add2");
 })
 
-// app.post('/downloaddata',(req,res) => {
+app.get("/add3",(req,res)=>
+{
+    res.render("add3");
+})
 
-//     var jsondata = req.body.json
 
-//     var exceloutput = Date.now() + "output.xlsx"
 
-//     if(isJson(jsondata)){
-//         var xls = json2xls(JSON.parse(jsondata));
+var url = "mongodb://localhost:27017/csvdata";
 
-//         fs.writeFileSync(exceloutput, xls, 'binary');
+var dbConn;
+mongodb.MongoClient.connect(url, {
+  useUnifiedTopology: true,
+})
+  .then((client) => {
+    console.log("DB Connected!");
+    dbConn = client.db();
+  })
+  .catch((err) => {
+    console.log(`DB Connection Error: ${err.message}`);
+  });
 
-//         res.download(exceloutput,(err) => {
-//             if(err){
-//                 fs.unlinkSync(exceloutput)
-//                 res.send("Unable to download the excel file")
-//             }
-//             fs.unlinkSync(exceloutput)
-//         })
-//     }
-//     else{
-//         res.send("JSON Data is not valid")
-//     }
 
-// })
+let csvData="test";
+app.use(upload());
+app.post("/add3",(req,res)=>
+{
+    csvData = req.files.csvfile.data.toString("utf8");
+
+  csvtojson()
+    .fromString(csvData)
+    .then((source) => {
+      // Fetching the all data from each row
+      var arrayToInsert = [];
+      for (var i = 0; i < source.length; i++) {
+        var oneRow = {
+          Timestamp: source[i]["Timestamp"],
+          Email: source[i]["Email"],
+          RegistrationNumber: source[i]["RegistrationNumber"],
+          Name: source[i]["Name"],
+          ContactNumber: source[i]["ContactNumber"],
+          FathersName: source[i]["FathersName"],
+          FatherNumber: source[i]["FatherNumber"],
+          MothersName: source[i]["MothersName"],
+          Mothersnumber: source[i]["Mothersnumber"],
+          Address: source[i]["Address"],
+          CSbackground: source[i]["CSbackground"],
+        };
+        arrayToInsert.push(oneRow);
+      }
+      //inserting into the table “employees”
+    var collectionName = "Students MCA 21-23";
+    var collection = dbConn.collection(collectionName);
+    collection.insertMany(arrayToInsert, (err, result) => {
+        if (err) console.log(err);
+        if (result) {
+          console.log("Import CSV into database successfully.");
+        }
+      });
+    });
+
+  return csvtojson()
+    .fromString(csvData)
+    .then((json) => {
+      return res.status(201).send("Data inserted successfully");
+    });
+})
 
 app.get("*",(req,res)=>
 {

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+        crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>    
+    <title>CSV to JSON conversion</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+    <style>
+        td{
+            border: 2px solid;
+            margin: 0.3rem;
+            border-radius: 0.3rem;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="csvfileUpload">
+        <form method="POST" enctype="multipart/form-data" action="add3">
+            <label for="csvfile">CSV file Upload</label>
+            <button onclick="download_csv_file()">Download CSV</button>
+            <br>
+            <input type="file"  name="csvfile" id="csvfile">
+            <br>
+            <button type="submit">Submit</button> 
+            <br>
+            <input type="button" id="view" value="view" onclick="View()" />
+            <div id="dvCSV">
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        var csvFileData = [];
+  
+        function download_csv_file() {
+          var csv =
+            "Timestamp,Email,RegistrationNumber,Name,ContactNumber,FathersName,FatherNumber,MothersName,Mothersnumber,Address,CSbackground\n";
+  
+          //merge the data with CSV
+          csvFileData.forEach(function (row) {
+            csv += row.join(",");
+            csv += "\n";
+          });
+  
+          document.write(csv);
+  
+          var hiddenElement = document.createElement("a");
+          hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
+          hiddenElement.target = "_blank";
+  
+          //provide the name for the CSV file to be downloaded
+          hiddenElement.download = "Sample Student.csv";
+          hiddenElement.click();
+        }
+
+        function View() {
+        var fileUpload = document.getElementById("csvfile");
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var table = document.createElement("table");
+                    var rows = e.target.result.split("\n");
+                    for (var i = 0; i < rows.length; i++) {
+                        var cells = rows[i].split(",");
+                        if (cells.length > 1) {
+                            var row = table.insertRow(-1);
+                            for (var j = 0; j < cells.length; j++) {
+                                var cell = row.insertCell(-1);
+                                cell.innerHTML = cells[j];
+                            }
+                        }
+                    }
+                    var dvCSV = document.getElementById("dvCSV");
+                    dvCSV.innerHTML = "";
+                    dvCSV.appendChild(table);
+                }
+                reader.readAsText(fileUpload.files[0]);
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid CSV file(or rename to a proper csv file).");
+        }
+    }
+
+
+      </script>
+
+</body>
+</html>
